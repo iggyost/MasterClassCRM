@@ -1,0 +1,171 @@
+﻿<Window x:Class="MasterClassCRM.Views.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MasterClassCRM.Views.Windows"
+        xml:lang="RU-ru"
+        mc:Ignorable="d"
+        MinHeight="720" MaxHeight="1080"
+        MinWidth="1280" MaxWidth="1920"
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen"
+        Title="MasterClassCRM">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="64"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock FontSize="28" 
+                   VerticalAlignment="Center"
+                   FontWeight="SemiBold">MasterClassCRM</TextBlock>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="86"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <StackPanel Margin="8 0">
+                    <TextBlock FontSize="19">Поиск</TextBlock>
+                    <TextBox FontSize="19"
+                             Name="SearchTb" TextChanged="SearchTb_TextChanged"></TextBox>
+                    <Button FontSize="21"
+                            Name="ResetBtn">Сбросить</Button>
+                </StackPanel>
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal">
+                    <StackPanel Margin="8 0"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                        <TextBlock FontSize="21"
+                                   VerticalAlignment="Center"
+                                   Margin="8 0">По названию</TextBlock>
+                        <Viewbox Height="24"
+                                 Width="24"
+                                 HorizontalAlignment="Left">
+                            <RadioButton Name="NameRdbtn"
+                                         GroupName="SortBy" IsChecked="True"/>
+                        </Viewbox>
+                    </StackPanel>
+                    <StackPanel Margin="8 0"
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                        <TextBlock FontSize="19"
+                               VerticalAlignment="Center"
+                               Margin="8 0">По клиенту</TextBlock>
+                        <Viewbox Height="24"
+                             Width="24"
+                             HorizontalAlignment="Left">
+                            <RadioButton Name="ClientRdbtn"
+                                         GroupName="SortBy"/>
+                        </Viewbox>
+                    </StackPanel>
+                    <StackPanel Margin="8 0"
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                        <TextBlock FontSize="19"
+                               VerticalAlignment="Center"
+                               Margin="8 0">По дате</TextBlock>
+                        <DatePicker FontSize="19"
+                                    Name="DateDp"></DatePicker>
+                    </StackPanel>
+                    <StackPanel Margin="8 0"
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                        <TextBlock FontSize="19"
+                               VerticalAlignment="Center"
+                               Margin="8 0">По статусу</TextBlock>
+                        <ComboBox FontSize="19"
+                                  Width="150"
+                                  Name="StatusCmb"
+                                  DisplayMemberPath="name"></ComboBox>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+            <ListView Grid.Row="1"
+                      Name="DealsLv" 
+                      Loaded="DealsLv_Loaded"
+                      FontSize="21">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Заказ" 
+                                        Width="auto"
+                                        DisplayMemberBinding="{Binding Path=name}"></GridViewColumn>
+                        <GridViewColumn Header="Дата"
+                                        Width="auto"
+                                        DisplayMemberBinding="{Binding Path=date, StringFormat={}dd.MM.yyy - H:mm:ss}"></GridViewColumn>
+                        <GridViewColumn Header="Стоимость"
+                                        Width="120"
+                                        DisplayMemberBinding="{Binding Path=cost, StringFormat={}0.00₽}"></GridViewColumn>
+                        <GridViewColumn Header="Клиент"
+                                        Width="auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Name="ClientBtn"
+                                            Tag="{Binding client_id}"
+                                            Content="{Binding Path=Client.name}"
+                                            Click="ClientBtn_Click"></Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Сотрудник"
+                                        Width="auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Name="UserBtn"
+                                            Tag="{Binding user_id}"
+                                            Content="{Binding Path=Users.name}"
+                                            Click="UserBtn_Click"></Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Статус"
+                                        Width="auto"
+                                        DisplayMemberBinding="{Binding Path=Status.name}"></GridViewColumn>
+                        <GridViewColumn>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Tag="{Binding Path=id}"
+                                            Name="DealBtn">Перейти в заказ</Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="16"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="8"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="8"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button FontSize="19"
+                        Name="AddDealBtn" Click="AddDealBtn_Click">Добавить</Button>
+                <Button Grid.Column="2"
+                        FontSize="19"
+                        Name="EditDealBtn" Click="EditDealBtn_Click">Изменить</Button>
+                <Button Grid.Column="4"
+                        FontSize="19"
+                        Name="DeleteDealBtn" Click="DeleteDealBtn_Click">Удалить</Button>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
